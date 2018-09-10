@@ -1,8 +1,8 @@
 package pkg;
 
+import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.junit.Test;
 
 import pkg1.HelloWorld;
 

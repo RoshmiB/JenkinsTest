@@ -1,14 +1,18 @@
 pipeline{
 
-    agent any
+    agent {
+        node {
+        label 'master'
+    }
+}
    
 stages{
     stage('build')
         {
       steps{
           script{
-            echo $Helloo
-            sh "mvn clean install"
+            echo "Helloo"
+            sh "mvn clean install -Dmaven.test.skip"
                 }
             }
          }

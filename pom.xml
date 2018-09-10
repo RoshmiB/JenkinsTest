@@ -6,14 +6,25 @@
   
   <dependencyManagement>
    <dependencies>
-     <dependency>
+      <dependency>
         <groupId>junit</groupId>
         <artifactId>juint</artifactId>
         <version>4.11</version>
         <scope>test</scope>
-     </dependency>
+     </dependency> 
     </dependencies>
   </dependencyManagement>
   
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>${skipTests}</skipTests>
+          <failIfNoTests>false</failIfNoTests>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   
 </project>
