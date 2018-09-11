@@ -20,10 +20,10 @@ stages{
     
  post{
         always{
-        echo "from always"
+        echo "from always block"
         }
         success{
-        echo "from success"
+        echo "from success block"
         }
         failure{
         echo "Send eamil as its failed "
