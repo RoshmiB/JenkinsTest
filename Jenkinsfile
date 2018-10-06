@@ -7,6 +7,7 @@ pipeline{
 }
    
 stages{
+
     stage('build')
         {
       steps{
@@ -16,6 +17,20 @@ stages{
                 }
             }
          }
+         
+    stage('test')
+    	{
+    	steps{
+    	    def ans = input ('Do u want the test to run ? ans (Y/N) ')
+    	    
+    	    if ( ans == "Y" ){
+    	                    sh "mvn test"
+    	                	}
+    	    else 
+    	    	junit  'build/reports/test/result.xml'    
+    		}
+		}
+     
        }
     
  post{
