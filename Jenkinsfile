@@ -28,10 +28,27 @@ stages{
     	                    sh "mvn test"
     	                	}
     	    else 
-    	    	junit  'build/reports/test/result.xml'    
+    	    	junit  '/Users/roshmi.b/Desktop/result.xml'    
     			}
     	  	}
 		}
+		
+	// How to initialize software and set path
+ 		
+ 	stage('ansible')
+ 	{
+ 		steps
+ 		{
+ 			script
+ 			{
+    			def ansibleHome = tool name: 'ansible'
+    			env.PATH = "${ansibleHome}:${env.PATH}"
+			}
+			sh 'ansible --version'
+		}
+	}
+		
+		
       }
     
  post{
