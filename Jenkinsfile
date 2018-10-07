@@ -32,6 +32,7 @@ stages{
     			env.PATH = "${mvnHome}:${env.PATH}"
 			}
 			sh 'mvn --version'
+			echo '$env.PATH'
 		}
 	}
 		
