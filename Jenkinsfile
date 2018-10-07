@@ -18,20 +18,6 @@ stages{
             }
          }
          
-    stage('test')
-    	{
-    	steps{
-    		script{
-    	    def ans = input ('Do u want the test to run ? ans (Y/N) ')
-    	    
-    	    if ( ans == "Y" ){
-    	                    sh "mvn test"
-    	                	}
-    	    else 
-    	    	junit  '/Users/roshmi.b/Desktop/result.xml'    
-    			}
-    	  	}
-		}
 		
 	// How to initialize software and set path
  		
