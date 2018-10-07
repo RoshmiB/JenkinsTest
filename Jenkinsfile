@@ -20,17 +20,18 @@ stages{
          
 		
 	// How to initialize software and set path
+	//Go to global tool configuration and add the tool
  		
- 	stage('ansible')
+ 	stage('maven')
  	{
  		steps
  		{
  			script
  			{
-    			def ansibleHome = tool name: 'ansible'
-    			env.PATH = "${ansibleHome}:${env.PATH}"
+    			def mvnHome = tool name: 'maven'
+    			env.PATH = "${mvnHome}:${env.PATH}"
 			}
-			sh 'ansible --version'
+			sh 'mvn --version'
 		}
 	}
 		
