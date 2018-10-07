@@ -21,6 +21,7 @@ stages{
     stage('test')
     	{
     	steps{
+    		script{
     	    def ans = input ('Do u want the test to run ? ans (Y/N) ')
     	    
     	    if ( ans == "Y" ){
@@ -28,10 +29,10 @@ stages{
     	                	}
     	    else 
     	    	junit  'build/reports/test/result.xml'    
-    		}
+    			}
+    	  	}
 		}
-     
-       }
+      }
     
  post{
         always{
