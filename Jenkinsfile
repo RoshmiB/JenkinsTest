@@ -85,12 +85,19 @@ stages{
 								  ok 'Promote!!!'
 								  parameters: {
  			string(defaultValue: ‘uat’, description: ‘Environment’, name: ‘env’)
- 			int(defaultValue: 2, description: ‘Target’, name: ‘target’)
+ 			string(defaultValue: 2, description: ‘Target’, name: ‘target’)
 				} }
 	
 	 		steps{
+	 		
+	 		def inputenv = userInput[‘env’]
+	 		def inputtarget = userInput[‘target’]
+
 			echo 'Env: '+userInput[‘env’]
 			echo 'Target: '+userInput[‘target’]
+			
+			writeFile file: "/Users/roshmi.b/Desktop/inputData.txt", text: "Config=${inputenv}\r\nTest=${inputtarget}"
+			archiveArtifacts '/Users/roshmi.b/Desktop/inputData.txt'
 				}
 	}
 	
