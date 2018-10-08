@@ -109,8 +109,9 @@ stages{
 
 	stage('build2') {
       steps {
-        configFileProvider([configFile(fileId: 'deploy_2_local_art', variable: 'MAVEN_SETTINGS')]) {
-          sh 'mvn clean deploy -B -Dmaven.test.skip=true -s $MAVEN_SETTINGS'
+          echo env.MAVEN_SETTINGS
+          configFileProvider([configFile(fileId: '95c43fc5-a0b4-42a7-9436-372d953dcc5a', variable: 'MAVEN_SETTINGS')]) {
+          sh "mvn deploy -Dmaven.test.skip=true -s $MAVEN_SETTINGS"
         }
       }
 	}
