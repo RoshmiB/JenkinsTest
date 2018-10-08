@@ -78,27 +78,23 @@ stages{
 		  }
 	}
 
-	stage('promotion_userinput')
-	{
-		steps{
-			script{
-			def userInput = input ( id: 'userInput',message: 'LetsPromote' ,ok: 'Promote!!!',
-								  	parameters: [  
- 			[$class: 'hudson.model.ParameterDefinition',defaultValue: 'uat', description: 'Environment', name: 'env']
- 			[$class: 'hudson.model.ParameterDefinition',defaultValue: 'uat1', description: 'Target', name: 'target']
-				] )
-	 		
-	 		def inputenv = userInput['env']
-	 		def inputtarget = userInput['target']
+	stage('Example') {
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                //submitter "alice,bob"
+                parameters {
+                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                    string(name: 'PASSWORD', defaultValue: 'Mr Jenkins', description: 'pass')
+                }
+            }
+            steps {
+                echo "Hello, ${PERSON}, nice to meet you."
 
-			echo 'Env: '+userInput['env']
-			echo 'Target: '+userInput['target']
-			
-			writeFile file: "/Users/roshmi.b/Desktop/inputData.txt", text: "Config=${inputenv}\r\nTest=${inputtarget}"
+			writeFile file: "/Users/roshmi.b/Desktop/inputData.txt", text: "Config=${PERSON}\r\nTest=${PASSOWRD}"
 			archiveArtifacts '/Users/roshmi.b/Desktop/inputData.txt'
 				}
 			}
-	}
 	
 	stage('env_variable') {
             steps {
