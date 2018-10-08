@@ -7,6 +7,7 @@ pipeline{
 
 	docker {
         image 'maven'
+        label 'master'
         args '-v $HOME/.m2:/root/m2'
         	}
     	}
@@ -32,7 +33,7 @@ pipeline{
     		}
 		
 	environment { 
-            DEBUG_FLAGS = '-g'
+            VARIABLE = 'roshmi'
             }	
    
 stages{
@@ -104,7 +105,10 @@ stages{
 	
 	stage('env_variable') {
             steps {
+            	script{
                 sh 'printenv'
+                echo ${env.VARIABLE}
+                }
             }
         }
 	
