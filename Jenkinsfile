@@ -80,6 +80,8 @@ stages{
 	stage('promotion_userinput')
 	{
 	
+		steps{
+			script{
 			def userInput = input { id ‘userInput’
 								  message ‘LetsPromote’ 
 								  ok 'Promote!!!'
@@ -87,8 +89,6 @@ stages{
  			string(defaultValue: ‘uat’, description: ‘Environment’, name: ‘env’)
  			string(defaultValue: 2, description: ‘Target’, name: ‘target’)
 				} }
-	
-	 		steps{
 	 		
 	 		def inputenv = userInput[‘env’]
 	 		def inputtarget = userInput[‘target’]
@@ -99,6 +99,7 @@ stages{
 			writeFile file: "/Users/roshmi.b/Desktop/inputData.txt", text: "Config=${inputenv}\r\nTest=${inputtarget}"
 			archiveArtifacts '/Users/roshmi.b/Desktop/inputData.txt'
 				}
+			}
 	}
 	
 	stage('env_variable') {
