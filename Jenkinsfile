@@ -104,6 +104,7 @@ stages{
                 echo env.VARIABLE
                 }
             }
+            }
 // to deploy:- Jenikins-->Manage Jenkins-->Manage files-->Maven settings.xml       
 
 	stage('build2') {
@@ -112,6 +113,7 @@ stages{
           sh 'mvn clean deploy -B -Dmaven.test.skip=true -s $MAVEN_SETTINGS'
         }
       }
+	}
 	
  }
     
