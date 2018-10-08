@@ -80,13 +80,13 @@ stages{
 	stage('promotion_userinput')
 	{
 	
-			def userInput = input id: ‘userInput’, 
-								  message: ‘LetsPromote’, 
-								  ok: 'Promote!!!',
+			def userInput = input { id ‘userInput’
+								  message ‘LetsPromote’ 
+								  ok 'Promote!!!'
 								  parameters: {
- 			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat’, description: ‘Environment’, name: ‘env’]
- 			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat1’, description: ‘Target’, name: ‘target’]
-				}
+ 			string(defaultValue: ‘uat’, description: ‘Environment’, name: ‘env’)
+ 			int(defaultValue: 2, description: ‘Target’, name: ‘target’)
+				} }
 	
 	 		steps{
 			echo 'Env: '+userInput[‘env’]
