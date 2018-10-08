@@ -1,9 +1,14 @@
 pipeline{
 
     agent {
-        node {
-        label 'master'
-    }
+//        node {
+//        label 'master'
+//			    }
+
+	docker {
+        image 'maven'
+        args '-v $HOME/.m2:/root/m2'
+        }
     
     parameters {
         	 choice(
@@ -20,6 +25,11 @@ pipeline{
             description: '',
             name: 'percentage')
     		}
+    		
+    options {
+      timeout(time: 30,unit: 'MINUTES')
+      disableConcurrentBuilds()
+    }
 }
    
 stages{
@@ -27,7 +37,11 @@ stages{
 	def userInput = input(id: ‘userInput’, message: ‘LetsPromote’, parameters: [
  			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat’, description: ‘Environment’, name: ‘env’],
  			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat1’, description: ‘Target’, name: ‘target’]
-																					])
+		])
+		
+	environment { 
+                DEBUG_FLAGS = '-g'
+            }																				
 
     stage('build')
         {
@@ -57,7 +71,7 @@ stages{
 		}
 	}
 	
-	stage('choice')
+	stage('choice_dropdown')
 	{
 	
 	when { 
@@ -70,13 +84,19 @@ stages{
 		  }
 	}
 
-	stage('promotion')
+	stage('promotion_userinput')
 	{
 	 		steps{
 			echo (“Env: “+userInput[‘env’])
 			echo (“Target: “+userInput[‘target’])
 				}
 	}
+	
+	stage('env_variable') {
+            steps {
+                sh 'printenv'
+            }
+        }
 	
  }
     
