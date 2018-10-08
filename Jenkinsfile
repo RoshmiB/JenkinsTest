@@ -8,8 +8,8 @@ pipeline{
 	docker {
         image 'maven'
         args '-v $HOME/.m2:/root/m2'
-        }
-    }
+        	}
+    	}
     parameters {
         	 choice(
             // choices are a string of newline separated values
@@ -27,22 +27,16 @@ pipeline{
     		}
     		
     options {
-      timeout(time: 30,unit: 'MINUTES')
-      disableConcurrentBuilds()
-    }
-
-   
-stages{
-
-	def userInput = input(id: ‘userInput’, message: ‘LetsPromote’, parameters: [
- 			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat’, description: ‘Environment’, name: ‘env’],
- 			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat1’, description: ‘Target’, name: ‘target’]
-		])
+      		timeout(time: 30,unit: 'MINUTES')
+      		disableConcurrentBuilds()
+    		}
 		
 	environment { 
-                DEBUG_FLAGS = '-g'
-            }																				
-
+            DEBUG_FLAGS = '-g'
+            }	
+   
+stages{
+		
     stage('build')
         {
       steps{
@@ -53,7 +47,6 @@ stages{
             }
          }
          
-		
 	// How to initialize software and set path
 	//Go to global tool configuration and add the tool
  		
@@ -86,9 +79,15 @@ stages{
 
 	stage('promotion_userinput')
 	{
+	
+			def userInput = input(id: ‘userInput’, message: ‘LetsPromote’, parameters: [
+ 			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat’, description: ‘Environment’, name: ‘env’],
+ 			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat1’, description: ‘Target’, name: ‘target’]
+				])
+	
 	 		steps{
-			echo (“Env: “+userInput[‘env’])
-			echo (“Target: “+userInput[‘target’])
+			echo 'Env: '+userInput[‘env’]
+			echo 'Target: '+userInput[‘target’]
 				}
 	}
 	
