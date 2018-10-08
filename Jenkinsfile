@@ -83,10 +83,10 @@ stages{
 		steps{
 			script{
 			def userInput = input ( id: 'userInput',message: 'LetsPromote' ,ok: 'Promote!!!',
-								  	parameters: {
- 			string(defaultValue: 'uat', description: 'Environment', name: 'env')
- 			string(defaultValue: 'uat1', description: 'Target', name: 'target')
-				} )
+								  	parameters: [  
+ 			[$class: 'hudson.model.TextParameterDefinition',defaultValue: 'uat', description: 'Environment', name: 'env']
+ 			[$class: 'hudson.model.TextParameterDefinition',defaultValue: 'uat1', description: 'Target', name: 'target']
+				] )
 	 		
 	 		def inputenv = userInput['env']
 	 		def inputtarget = userInput['target']
