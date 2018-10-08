@@ -43,6 +43,7 @@ stages{
       steps{
           script{
             echo "Helloo"
+            echo 'Pulling...' + env.BRANCH_NAME
             sh "mvn clean install -Dmaven.test.skip"
                 }
             }
@@ -91,8 +92,8 @@ stages{
             steps {
                 echo "Hello, ${PERSON}, nice to meet you."
 
-			writeFile file: "/Users/roshmi.b/Desktop/inputData.txt", text: "Config=${PERSON}\r\nTest=${PASSOWRD}"
-			archiveArtifacts '/Users/roshmi.b/Desktop/inputData.txt'
+			//writeFile file: "/Users/roshmi.b/Desktop/inputData.txt", text: "Config=${PERSON}\r\nTest=${PASSOWRD}"
+			//archiveArtifacts '/Users/roshmi.b/Desktop/inputData.txt'
 				}
 			}
 	
@@ -100,10 +101,17 @@ stages{
             steps {
             	script{
                 sh 'printenv'
-                echo ${env.VARIABLE}
+                echo env.VARIABLE
                 }
             }
+// to deploy:- Jenikins-->Manage Jenkins-->Manage files-->Maven settings.xml       
+
+	stage('build2') {
+      steps {
+        configFileProvider([configFile(fileId: 'deploy_2_local_art', variable: 'MAVEN_SETTINGS')]) {
+          sh 'mvn clean deploy -B -Dmaven.test.skip=true -s $MAVEN_SETTINGS'
         }
+      }
 	
  }
     
