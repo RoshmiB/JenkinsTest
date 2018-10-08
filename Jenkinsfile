@@ -84,8 +84,8 @@ stages{
 			script{
 			def userInput = input ( id: 'userInput',message: 'LetsPromote' ,ok: 'Promote!!!',
 								  	parameters: [  
- 			[$class: 'hudson.model.TextParameterDefinition',defaultValue: 'uat', description: 'Environment', name: 'env']
- 			[$class: 'hudson.model.TextParameterDefinition',defaultValue: 'uat1', description: 'Target', name: 'target']
+ 			[$class: 'hudson.model.ParameterDefinition',defaultValue: 'uat', description: 'Environment', name: 'env']
+ 			[$class: 'hudson.model.ParameterDefinition',defaultValue: 'uat1', description: 'Target', name: 'target']
 				] )
 	 		
 	 		def inputenv = userInput['env']
