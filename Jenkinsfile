@@ -9,7 +9,7 @@ pipeline{
         image 'maven'
         args '-v $HOME/.m2:/root/m2'
         }
-    
+    }
     parameters {
         	 choice(
             // choices are a string of newline separated values
@@ -30,7 +30,7 @@ pipeline{
       timeout(time: 30,unit: 'MINUTES')
       disableConcurrentBuilds()
     }
-}
+
    
 stages{
 
