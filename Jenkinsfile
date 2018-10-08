@@ -14,18 +14,16 @@ pipeline{
         	 choice(
             // choices are a string of newline separated values
             // https://issues.jenkins-ci.org/browse/JENKINS-41180
-            name: 'Choose what to do',
+			name: 'REQUESTED_ACTION',
             choices: 'create\nupdate', 
-            description: '',
-            name: 'REQUESTED_ACTION')
+            description: '')
             
              choice(
             // choices are a string of newline separated values
             // https://issues.jenkins-ci.org/browse/JENKINS-41180
-            name: 'Choose the percentage',
+            name: 'percentage',
             choices: '100\n50',
-            description: '',
-            name: 'percentage')
+            description: '')
     		}
     		
     options {
