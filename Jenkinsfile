@@ -14,13 +14,15 @@ pipeline{
         	 choice(
             // choices are a string of newline separated values
             // https://issues.jenkins-ci.org/browse/JENKINS-41180
-            choices: 'create\nupdate',
+            name: 'Choose what to do',
+            choices: 'create\nupdate', 
             description: '',
             name: 'REQUESTED_ACTION')
             
              choice(
             // choices are a string of newline separated values
             // https://issues.jenkins-ci.org/browse/JENKINS-41180
+            name: 'Choose the percentage',
             choices: '100\n50',
             description: '',
             name: 'percentage')
@@ -80,10 +82,13 @@ stages{
 	stage('promotion_userinput')
 	{
 	
-			def userInput = input(id: ‘userInput’, message: ‘LetsPromote’, parameters: [
- 			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat’, description: ‘Environment’, name: ‘env’],
+			def userInput = input id: ‘userInput’, 
+								  message: ‘LetsPromote’, 
+								  ok: 'Promote!!!',
+								  parameters: {
+ 			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat’, description: ‘Environment’, name: ‘env’]
  			[$class: ‘TextParameterDefinition’, defaultValue: ‘uat1’, description: ‘Target’, name: ‘target’]
-				])
+				}
 	
 	 		steps{
 			echo 'Env: '+userInput[‘env’]
