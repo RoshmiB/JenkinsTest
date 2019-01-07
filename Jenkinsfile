@@ -111,6 +111,7 @@ stages{
 
       stage('build2') {
           steps {
+           script{
              echo env.MAVEN_SETTINGS
 	     def pom = readMavenPom file: 'pom.xml'  //returned object is a model
              def ver = pom['version']       //${pom.version} --> extracting the value from the model object
@@ -121,6 +122,7 @@ stages{
 				 sh "mvn install -Dmaven.test.skip=true -s $MyGlobalSettings" }
 			  
                        }
+	           }
                 }
 	  }
 	
