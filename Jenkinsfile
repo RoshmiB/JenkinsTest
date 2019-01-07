@@ -1,6 +1,8 @@
 pipeline{
+	
+ agent any
 
-  agent {
+/*  agent {
 //        node {
 //        label 'master'
 //			    }
@@ -10,7 +12,7 @@ pipeline{
         label 'master'
         args '-v $HOME/.m2:/root/m2'
         	}
-    	}
+    	}*/
   parameters {
             choice(
             // choices are a string of newline separated values
