@@ -1,6 +1,6 @@
 pipeline{
 
-    agent {
+  agent {
 //        node {
 //        label 'master'
 //			    }
@@ -11,11 +11,11 @@ pipeline{
         args '-v $HOME/.m2:/root/m2'
         	}
     	}
-    parameters {
-        	 choice(
+  parameters {
+            choice(
             // choices are a string of newline separated values
             // https://issues.jenkins-ci.org/browse/JENKINS-41180
-			name: 'REQUESTED_ACTION',
+	    name: 'REQUESTED_ACTION',
             choices: 'create\nupdate', 
             description: '')
             
@@ -25,22 +25,22 @@ pipeline{
             name: 'percentage',
             choices: '100\n50',
             description: '')
-    		}
+    	}
     		
-    options {
+ options {
       		timeout(time: 30,unit: 'MINUTES')
       		disableConcurrentBuilds()
-    		}
+    	 }
 		
-	environment { 
+environment { 
             VARIABLE = 'roshmi'
             }	
    
 stages{
 		
-    stage('build')
+      stage('build')
         {
-      steps{
+       steps{
           script{
             echo "Helloo"
             echo 'Pulling...' + env.BRANCH_NAME
@@ -97,24 +97,30 @@ stages{
 				}
 			}
 	
-	stage('env_variable') {
+       stage('env_variable') {
             steps {
             	script{
                 sh 'printenv'
                 echo env.VARIABLE
                 }
-            }
+              }
             }
 // to deploy:- Jenikins-->Manage Jenkins-->Manage files-->Maven settings.xml       
 
-	stage('build2') {
-      steps {
-          echo env.MAVEN_SETTINGS
-          configFileProvider([configFile(fileId: '95c43fc5-a0b4-42a7-9436-372d953dcc5a', variable: 'MAVEN_SETTINGS')]) {
-          sh "mvn deploy -Dmaven.test.skip=true -s $MAVEN_SETTINGS"
-        }
-      }
-	}
+      stage('build2') {
+          steps {
+             echo env.MAVEN_SETTINGS
+	     def pom = readMavenPom file: 'pom.xml'  //returned object is a model
+             def ver = pom['version']       //${pom.version} --> extracting the value from the model object
+             def mvn_dir = "/usr/bin/mvn"
+	     def branch = "$(env.BRANCH_NAME)"
+		  if (branch.contains('master') && !(version.contains('SNAPSHOT'))){
+	    		 configFileProvider([configFile(fileId: 'myconfig', variable: 'MyGlobalSettings')]) {
+				 sh "mvn install -Dmaven.test.skip=true -s $MyGlobalSettings" }
+			  
+                       }
+                }
+	  }
 	
  }
     
