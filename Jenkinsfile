@@ -156,7 +156,8 @@ stages{
 	   post {
             always {
 		    echo "branch is ${branch}"
-            }
+            		}
+	        }	   
 		
 	
 	  }
