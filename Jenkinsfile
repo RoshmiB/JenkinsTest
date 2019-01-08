@@ -109,7 +109,7 @@ stages{
             }
 // to deploy:- Jenikins-->Manage Jenkins-->Manage files-->Maven settings.xml       
 
-      stage('build2') {
+/*      stage('build2') {
           steps {
            script{
              
@@ -126,6 +126,28 @@ stages{
 			  
                        }
 	           }
+                }
+	  }
+	  
+	  */
+	
+	stage('build2') {
+          
+           define{   
+	     def pom = readMavenPom file: 'pom.xml'  //returned object is a model
+             def ver = pom['version']       //${pom.version} --> extracting the value from the model object
+             def mvn_dir = "/usr/bin/mvn"
+	     def branch = env.GIT_BRANCH
+	       }
+		
+	   steps{	
+		   echo "version is ${ver}"
+		   echo "branch is ${branch}"
+		   
+		  if (branch.contains('master') && ver.contains('SNAPSHOT')){
+	    		 configFileProvider([configFile(fileId: 'myconfig', variable: 'MyGlobalSettings')]) {
+				 sh "mvn install -Dmaven.test.skip=true -s $MyGlobalSettings" } 
+                       								} 
                 }
 	  }
 	
