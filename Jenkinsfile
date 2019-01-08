@@ -116,11 +116,11 @@ stages{
 	     def pom = readMavenPom file: 'pom.xml'  //returned object is a model
              def ver = pom['version']       //${pom.version} --> extracting the value from the model object
              def mvn_dir = "/usr/bin/mvn"
-	     def branch = env.BRANCH_NAME
+	     def branch = env.GIT_BRANCH
 		   echo "version is ${ver}"
 		   echo "branch is ${branch}"
 		   
-		  if (branch.contains('master') && !(version.contains('SNAPSHOT'))){
+		  if (branch.contains('master') && (version.contains('SNAPSHOT'))){
 	    		 configFileProvider([configFile(fileId: 'myconfig', variable: 'MyGlobalSettings')]) {
 				 sh "mvn install -Dmaven.test.skip=true -s $MyGlobalSettings" }
 			  
