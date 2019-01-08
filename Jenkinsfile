@@ -37,14 +37,7 @@ pipeline{
 environment { 
             VARIABLE = 'roshmi'
             }	
-	
-define{   
-	     def pom = readMavenPom file: 'pom.xml'  //returned object is a model
-             def ver = pom['version']       //${pom.version} --> extracting the value from the model object
-             def mvn_dir = "/usr/bin/mvn"
-	     def branch = env.GIT_BRANCH
-	       }
-   
+	   
 stages{
 		
       stage('build')
@@ -139,6 +132,13 @@ stages{
 	  */
 	
 	stage('build2') {
+		
+	  environment{   
+	     def pom = readMavenPom file: 'pom.xml'  //returned object is a model
+             def ver = pom['version']       //${pom.version} --> extracting the value from the model object
+             def mvn_dir = "/usr/bin/mvn"
+	     def branch = env.GIT_BRANCH
+	       }
           		
 	   steps{	
 		   echo "version is ${ver}"
