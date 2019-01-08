@@ -152,6 +152,13 @@ stages{
 	   when {
     		  environment ignoreCase: true, name: 'branch', value: 'origin/master'
   		}
+		
+	   post {
+            always {
+		    echo "branch is ${branch}"
+            }
+		
+	
 	  }
 	
  }
