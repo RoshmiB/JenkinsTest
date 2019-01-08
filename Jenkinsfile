@@ -143,12 +143,14 @@ stages{
 	   steps{	
 		   echo "version is ${ver}"
 		   echo "branch is ${branch}"
-		       								
+		   
+		   configFileProvider([configFile(fileId: 'myconfig', variable: 'MyGlobalSettings')]) {
+				 sh "mvn install -Dmaven.test.skip=true -s $MyGlobalSettings" }    								
                 }
 		
-	   /*when {
+	   when {
     		  environment ignoreCase: true, name: 'branch', value: 'origin/master'
-  		}*/
+  		}
 		
 	   post {
             always {
