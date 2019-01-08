@@ -134,8 +134,8 @@ stages{
 	stage('build2') {
 		
 	  environment{   
-             pom = "${readMavenPom file: 'pom.xml'} " //returned object is a model
-	     ver = "${pom['version']}"       //${pom.version} --> extracting the value from the model object
+             //pom = "${readMavenPom file: 'pom.xml'} " //returned object is a model
+	     ver = readMavenPom().getVersion()      //${pom.version} --> extracting the value from the model object
              mvn_dir = "/usr/bin/mvn"
 	     branch = "${env.GIT_BRANCH}"
 	       }
