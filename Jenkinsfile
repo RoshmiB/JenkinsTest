@@ -143,12 +143,15 @@ stages{
 	   steps{	
 		   echo "version is ${ver}"
 		   echo "branch is ${branch}"
-		   
-		  if (branch.contains('master') && ver.contains('SNAPSHOT')){
-	    		 configFileProvider([configFile(fileId: 'myconfig', variable: 'MyGlobalSettings')]) {
+		     
+	    	   configFileProvider([configFile(fileId: 'myconfig', variable: 'MyGlobalSettings')]) {
 				 sh "mvn install -Dmaven.test.skip=true -s $MyGlobalSettings" } 
-                       								} 
+                       								
                 }
+		
+	   when {
+    		  environment ignoreCase: true, name: 'branch', value: 'origin/master'
+  		}
 	  }
 	
  }
