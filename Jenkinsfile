@@ -54,7 +54,7 @@ stages{
 	// How to initialize software and set path
 	//Go to global tool configuration and add the tool
  		
- 	stage('maven')
+ /*	stage('maven')
  	{
  		steps
  		{
@@ -66,7 +66,7 @@ stages{
 			sh 'mvn --version'
 			echo '$env.PATH is = ' + env.PATH
 		}
-	}
+	}*/
 	
 	stage('choice_dropdown')
 	{
@@ -117,6 +117,9 @@ stages{
              def ver = pom['version']       //${pom.version} --> extracting the value from the model object
              def mvn_dir = "/usr/bin/mvn"
 	     def branch = env.BRANCH_NAME
+		   echo "version is ${ver}"
+		   echo "branch is ${branch}"
+		   
 		  if (branch.contains('master') && !(version.contains('SNAPSHOT'))){
 	    		 configFileProvider([configFile(fileId: 'myconfig', variable: 'MyGlobalSettings')]) {
 				 sh "mvn install -Dmaven.test.skip=true -s $MyGlobalSettings" }
