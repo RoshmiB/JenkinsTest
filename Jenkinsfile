@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-stages{
+    stages{
     // stage('parallel_test'){
     //     steps{
     //         parallel{
@@ -14,12 +14,12 @@ stages{
     //         }
     //     }
     // }
-    stage('take_input'){
-        steps{
-        echo "input"
+        stage('take_input'){
+            steps{
+                echo "input"
+            }
+        }
     }
-    }
-}
 }
 post{
     success{
