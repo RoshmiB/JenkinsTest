@@ -5,10 +5,10 @@ stages{
     stage('parallel_test'){
         steps{
             parallel{
-                stage('a'){
+                a:{
                     echo "$JENKINS_HOME"
                 }
-                stage('b') {
+                b: {
                     sh "git --version"
                 }
             }
