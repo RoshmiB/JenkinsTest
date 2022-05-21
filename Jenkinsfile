@@ -3,7 +3,7 @@ pipeline {
 
 }
 stages{
-    stage(parallel_test){
+    stage('parallel_test'){
         steps{
             parallel{
                 a:{
@@ -15,7 +15,7 @@ stages{
             }
         }
     }
-    stage(take_input){
+    stage('take_input'){
         echo "input"
     }
 }
