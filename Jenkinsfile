@@ -3,7 +3,7 @@ pipeline {
 
 stages{
     stage('parallel_test'){
-        //steps{
+        steps{
             parallel{
                 stage('a'){
                     echo "$JENKINS_HOME"
@@ -12,7 +12,7 @@ stages{
                     sh "git --version"
                 }
             }
-        //}
+        }
     }
     stage('take_input'){
         echo "input"
