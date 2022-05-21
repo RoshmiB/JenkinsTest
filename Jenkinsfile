@@ -2,18 +2,18 @@ pipeline {
     agent any
 
 stages{
-    stage('parallel_test'){
-        steps{
-            parallel{
-                a:{
-                    echo "$JENKINS_HOME"
-                }
-                b: {
-                    sh "git --version"
-                }
-            }
-        }
-    }
+    // stage('parallel_test'){
+    //     steps{
+    //         parallel{
+    //             a:{
+    //                 echo "$JENKINS_HOME"
+    //             }
+    //             b: {
+    //                 sh "git --version"
+    //             }
+    //         }
+    //     }
+    // }
     stage('take_input'){
         steps{
         echo "input"
