@@ -15,7 +15,9 @@ stages{
         }
     }
     stage('take_input'){
+        steps{
         echo "input"
+    }
     }
 }
 }
