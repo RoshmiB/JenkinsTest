@@ -20,12 +20,13 @@ pipeline {
             }
         }
     }
-}
-post{
-    success{
-        echo "from success block"
-    }
-    failure{
-        echo "from failure block"
-    }
+
+    post{
+        success{
+            echo "from success block"
+        }
+        failure{
+            echo "from failure block"
+        }
+    }    
 }
