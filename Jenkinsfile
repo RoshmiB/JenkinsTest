@@ -1,7 +1,6 @@
 pipeline {
     agent any
 
-}
 stages{
     stage('parallel_test'){
         //steps{
@@ -18,6 +17,7 @@ stages{
     stage('take_input'){
         echo "input"
     }
+}
 }
 post{
     success{
