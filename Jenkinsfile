@@ -1,5 +1,8 @@
 pipeline {
-    agent any
+    //agent any
+    agent {
+        label 'ec2_node'
+    }
 
     stages{
     stage('parallel_test'){
@@ -11,7 +14,7 @@ pipeline {
                 }
                 stage('b') {
                     steps{
-                        sh "git --version"
+                        sh "mvn install"
                     }
                 }
             }
