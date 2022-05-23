@@ -37,5 +37,8 @@ pipeline {
         failure{
             echo "from failure block"
         }
+        always {
+      step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
+        }
     }    
 }
