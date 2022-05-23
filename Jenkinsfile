@@ -38,7 +38,7 @@ pipeline {
             echo "from failure block"
         }
         always {
-            step([$class: 'Publisher', reportFilenamePattern: './bank-ocr/target/surefire-reports/testng-results.xml'])
+            step([$class: 'Publisher', reportFilenamePattern: '**/target/surefire-reports/testng-results.xml'])
         }
     }    
 }
