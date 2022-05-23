@@ -8,7 +8,7 @@
 	<name>test-training</name>
         <url>https://github.com/testdouble/contributing-tests/wiki</url>
 	<modules>
-          <module>example</module>
+          <!-- <module>example</module> -->
           <module>greeting</module>
           <module>unusual-spending-vendor</module>
           <module>unusual-spending</module>
