@@ -1,13 +1,13 @@
 pipeline {
-    //agent any
+    agent any
     //agent {
     //    label 'ec2_node'
     //}
-    agent {
-        docker {
-            image 'maven:3-jdk-8'
-        }    
-    }
+    // agent {
+    //     docker {
+    //         image 'maven:3-jdk-8'
+    //     }    
+    // }
     stages{
         stage('parallel_test'){
             parallel{
