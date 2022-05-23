@@ -47,8 +47,10 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+</project>
 
-	<build>
+
+	<!-- <build>
 		<plugins>
 			   <plugin>
 					  <artifactId>maven-compiler-plugin</artifactId>
@@ -80,5 +82,4 @@
 		<resources>
 			   <!-- <resource> <directory>src/test/resources</directory> </resource> -->
 		</resources>
- </build>
-</project>
+ </build> -->
