@@ -1,12 +1,17 @@
 pipeline {
     //agent any
+    //agent {
+    //    label 'ec2_node'
+    //}
     agent {
-        label 'ec2_node'
+        docker {
+            label 'docker'
+            image 'maven:3.3-jdk-8'
+        }
     }
-
     stages{
-    stage('parallel_test'){
-        parallel{
+        stage('parallel_test'){
+            parallel{
                 stage('a'){
                     steps{
                         echo "$JENKINS_HOME"
