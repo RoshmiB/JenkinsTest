@@ -4,10 +4,8 @@ pipeline {
     //    label 'ec2_node'
     //}
     agent {
-        docker {
             label 'docker'
             image 'maven:3.3-jdk-8'
-        }
     }
     stages{
         stage('parallel_test'){
