@@ -18,7 +18,7 @@ pipeline {
                 }
                 stage('b') {
                     steps{
-                        sh "mvn install"
+                        sh "/opt/homebrew/bin/mvn install"
                     }
                 }
             }
@@ -38,7 +38,7 @@ pipeline {
             echo "from failure block"
         }
         always {
-      step([$class: 'Publisher', reportFilenamePattern: '**/testng-results.xml'])
+            step([$class: 'Publisher', reportFilenamePattern: './testng-results.xml'])
         }
     }    
 }
