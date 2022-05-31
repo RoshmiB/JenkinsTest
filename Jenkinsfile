@@ -2,21 +2,15 @@ pipeline{
 	
   agent 
     {
-      kubernetes{
-        label 'helm-pod'
-        containerTemplate {
-          name 'helm-pod'
-          image 'roshmi/helm-s3'
-          ttyEnabled true
-          command 'cat'
-        }  
-      }
+      docker {
+            image 'roshmi/helm-s3'
+        }
     }
 
 	stages{
     stage ('deploy_using_helm'){
       steps{
-        container('helm-pod'){
+        // container('helm-pod'){
           sh '''
             HELM_BUCKET=helm-weather
             PACKAGE=my-charts
@@ -31,7 +25,7 @@ pipeline{
             fi
             echo "deployed!"
           '''
-        }
+        // }
       }
     }
   }
