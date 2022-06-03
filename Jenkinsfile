@@ -16,19 +16,40 @@ pipeline {
                         echo "$JENKINS_HOME"
                     }
                 }
-                stage('b') {
-                    steps{
-                        sh "/opt/homebrew/bin/mvn install"
-                    }
+                stage('Build Artifact - Maven') {
+                  steps {
+                      sh "mvn clean package -DskipTests=true"
+                      archive 'target/*.jar'
+                  }
                 }
             }
-    }
+        stage('Unit Tests - JUnit and JaCoCo') {
+          steps {
+            sh "mvn test"
+          }
+          post {
+              always {
+                junit 'target/surefire-reports/*.xml'
+                jacoco execPattern: 'target/jacoco.exec'
+               }
+          }
+        }
+        stage('Vulnerability Scan ') {
+          steps {
+            sh "mvn dependency-check:check"
+          }
+          post {
+            always {
+              dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+            }
+          }
+        }  
         stage('take_input'){
             steps{
                     input('Do you want to proceed')
             }
         }
-    }
+      }
 
     post{
         success{
@@ -41,4 +62,4 @@ pipeline {
             step([$class: 'Publisher', reportFilenamePattern: '**/target/surefire-reports/testng-results.xml'])
         }
     }    
-}
+  }
