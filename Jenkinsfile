@@ -25,7 +25,7 @@ pipeline {
             }
         }  
         stage('Unit Tests - JUnit and JaCoCo') {
-          when (BRANCH_NAME == 'master') {
+          when (BRANCH_NAME != 'master') {
           steps {
             sh "mvn test"
           }
