@@ -24,19 +24,17 @@ pipeline {
                 }
             }
         }  
-        stage('Unit Tests - JUnit and JaCoCo') {
-          when (BRANCH_NAME != 'master') {
-          steps {
-            sh "mvn test"
-          }
-          post {
-              always {
-                junit 'target/surefire-reports/*.xml'
-                jacoco execPattern: 'target/jacoco.exec'
-               }
-          }
-          }  
-        }
+        // stage('Unit Tests - JUnit and JaCoCo') {
+        //   steps {
+        //     sh "mvn test"
+        //   }
+        //   post {
+        //       always {
+        //         junit 'target/surefire-reports/*.xml'
+        //         jacoco execPattern: 'target/jacoco.exec'
+        //        }
+        //   } 
+        // }
         stage('Vulnerability Scan ') {
           steps {
             sh "mvn dependency-check:check"
