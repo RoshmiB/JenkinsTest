@@ -25,6 +25,7 @@ pipeline {
             }
         }  
         stage('Unit Tests - JUnit and JaCoCo') {
+          when (BRANCH_NAME == 'master') {
           steps {
             sh "mvn test"
           }
@@ -34,6 +35,7 @@ pipeline {
                 jacoco execPattern: 'target/jacoco.exec'
                }
           }
+          }  
         }
         stage('Vulnerability Scan ') {
           steps {
