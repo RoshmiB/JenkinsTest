@@ -2,24 +2,13 @@ pipeline{
 	
   agent any
   parameters   {
-    string(name: 'TARGET_ENV', devaultValue: 'PROD', description: 'Environment')
+    string(name: 'FROM_BUILD', devaultValue: '', description: 'Build Source')
   }
 
-	stages{
-    stage ('BUILD'){
-      steps{
-        echo 'Compiling......'
-        sleep 5
-      }
-    }
+ stages{
     stage ('Deploy') {
       steps{
-        script{
-          build job: 'ReleaseJob'
-          parameters[
-            [$class: 'StringParameterValue', name: 'FROM_BUILD', value: "${BUILD_NUMBER}"]
-          ]
-        }
+        echo 'Deploying from source ${params.FROM_BUILD}'
       }
 
     }
