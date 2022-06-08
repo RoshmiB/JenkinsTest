@@ -8,7 +8,7 @@ pipeline{
  stages{
     stage ('Deploy') {
       steps{
-        echo 'Deploying from source ${params.FROM_BUILD}'
+        echo "Deploying from source ${params.FROM_BUILD}"
       }
 
     }
