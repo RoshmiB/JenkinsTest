@@ -2,7 +2,7 @@ pipeline{
 	
   agent any
   parameters   {
-    string(name: 'TARGET_ENV', devaultValue: 'PROD', description: 'Environment')
+    string(name: 'TARGET_ENV', defaultValue: 'PROD', description: 'Environment')
   }
 
 	stages{
