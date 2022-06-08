@@ -50,4 +50,3 @@ pipeline{
 //helm search repo my-charts
 //NAME                                CHART VERSION   APP VERSION     DESCRIPTION
 //my-charts/weatherapp-weather    0.1.0           0.0.1           The weather microservice for the weather app
-//helm install weatherapp-weather  my-charts/weatherapp-weather --set apikey=ecbc396f46mshb65cbb1f82cf334p1fcc87jsna5e962a3c542
