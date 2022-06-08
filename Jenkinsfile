@@ -14,13 +14,8 @@ pipeline{
     }
     stage ('Deploy') {
       steps{
-        script{
-          build (job: 'ReleaseJob',
-            parameters[
-             [$class: 'StringParameterValue', name: 'FROM_BUILD', value: "${BUILD_NUMBER}"]
-            ]
-          )  
-        }
+          build job: 'ReleaseJob',
+          parameters: [ string( name: 'FROM_BUILD', value: "${BUILD_NUMBER}" ) ]
       }
 
     }
