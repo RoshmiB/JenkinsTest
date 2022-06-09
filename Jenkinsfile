@@ -12,13 +12,6 @@ pipeline{
         sleep 5
       }
     }
-    stage ('Deploy') {
-      steps{
-          build job: 'ReleaseJob',
-          parameters: [ string( name: 'FROM_BUILD', value: "${BUILD_NUMBER}" ) ]
-      }
-
-    }
   }
     
  post{
@@ -26,7 +19,12 @@ pipeline{
         echo "from always block"
         }
         success{
-        echo "from success block"
+            script {
+                parallel(
+                    a: { build job: 'ReleaseJob', parameters: [ string( name: 'FROM_BUILD', value: "${BUILD_NUMBER}" ) ]},
+                    b: {build job: 'test2' }
+                )
+            }
         }
         failure{
         echo "Send eamil as its failed "
