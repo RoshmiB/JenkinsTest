@@ -1,6 +1,8 @@
 pipeline{
-#for testing merge2
 
+#for testing rebase
+#fot stash testing2
+	
   agent any
   parameters   {
     string(name: 'TARGET_ENV', defaultValue: 'PROD', description: 'Environment')
