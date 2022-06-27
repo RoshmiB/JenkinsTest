@@ -1,52 +1,43 @@
 pipeline{
-
-
-#for testing rebase
-#fot stash testing2
-#fot stash testing2
-#for testing merge
-
-  agent any
-  parameters   {
-    string(name: 'TARGET_ENV', defaultValue: 'PROD', description: 'Environment')
-  }
-
-	stages{
-    stage ('BUILD'){
-      steps{
-        echo 'Compiling......'
-        sleep 5
-      }
+    agent any
+    options{
+      timeout(time:60, unit: 'MINUTES')
     }
-  }
-    
- post{
-        always{
-        echo "from always block"
-        }
-        success{
-            script {
-                parallel(
-                    a: { build job: 'ReleaseJob', parameters: [ string( name: 'FROM_BUILD', value: "${BUILD_NUMBER}" ) ]},
-                    b: {build job: 'test2' }
-                )
+    parameters{
+      string(name: 'GIT_BRANCH', defaultValue: 'test7' , description: 'Git branch to build')
+      string(name: 'DOCKER_REG',       defaultValue: "https://hub.docker.com",                   description: 'Docker registry')
+      string(name: 'DOCKER_TAG',       defaultValue: 'dev',                                     description: 'Docker tag')
+      string(name: 'DOCKER_USR',       defaultValue: 'admin',                                   description: 'Your docker repository user')
+      string(name: 'DOCKER_PSW',       defaultValue: 'password',                                description: 'Your docker repository password')
+      string(name: 'HELM_REPO',        defaultValue: "https://helm-weather.s3.ap-south-1.amazonaws.com/charts/", description: 'Your helm repository')
+      string(name: 'HELM_USR',         defaultValue: 'admin',                                   description: 'Your helm repository user')
+      string(name: 'HELM_PSW',         defaultValue: 'password',                                description: 'Your helm repository password')
+    }
+    stages{
+        stage("git clone and setup"){
+            steps{
+                echo "Check out  code"
+                git branch: "test7",
+                        credentialsId: 'gitcred',
+                        url: 'https://github.com/RoshmiB/JenkinsTest.git'
+                // Validate kubectl
+                sh "kubectl cluster-info"
+                // Init helm client
+                sh "helm init"
+                echo "DOCKER_REG is ${DOCKER_REG}"
+                echo "HELM_REPO  is ${HELM_REPO}"
             }
         }
+    }
+    post{
+        always{
+            echo "========always========"
+        }
+        success{
+            echo "========pipeline executed successfully ========"
+        }
         failure{
-        echo "Send eamil as its failed "
+            echo "========pipeline execution failed========"
         }
     }
 }
-
-
-//aws s3api create-bucket --bucket helm-weather --region ap-south-1 --create-bucket-configuration LocationConstraint=ap-south-1
-//helm plugin install https://github.com/hypnoglow/helm-s3.git
-//helm s3 init s3://helm-weather/charts
-//helm repo add my-charts s3://helm-weather/charts
-//helm package weatherapp-weather
-//helm s3 push ./weatherapp-weather-0.1.0.tgz my-charts
-//mkdir /var/lib/jenkins/.kube
-//copy config file under .kube directory with jenkins ownership
-//helm search repo my-charts
-//NAME                                CHART VERSION   APP VERSION     DESCRIPTION
-//my-charts/weatherapp-weather    0.1.0           0.0.1           The weather microservice for the weather app
