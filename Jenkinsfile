@@ -7,11 +7,11 @@ pipeline{
       string(name: 'GIT_BRANCH', defaultValue: 'test7' , description: 'Git branch to build')
       string(name: 'DOCKER_REG',       defaultValue: "https://hub.docker.com",                   description: 'Docker registry')
       string(name: 'DOCKER_TAG',       defaultValue: 'dev',                                     description: 'Docker tag')
-      string(name: 'DOCKER_USR',       defaultValue: 'admin',                                   description: 'Your docker repository user')
-      string(name: 'DOCKER_PSW',       defaultValue: 'password',                                description: 'Your docker repository password')
+//      string(name: 'DOCKER_USR',       defaultValue: 'admin',                                   description: 'Your docker repository user')
+//      string(name: 'DOCKER_PSW',       defaultValue: 'password',                                description: 'Your docker repository password')
       string(name: 'HELM_REPO',        defaultValue: "https://helm-weather.s3.ap-south-1.amazonaws.com/charts/", description: 'Your helm repository')
-      string(name: 'HELM_USR',         defaultValue: 'admin',                                   description: 'Your helm repository user')
-      string(name: 'HELM_PSW',         defaultValue: 'password',                                description: 'Your helm repository password')
+//      string(name: 'HELM_USR',         defaultValue: 'admin',                                   description: 'Your helm repository user')
+//      string(name: 'HELM_PSW',         defaultValue: 'password',                                description: 'Your helm repository password')
     }
     stages{
         stage("git clone and setup"){
