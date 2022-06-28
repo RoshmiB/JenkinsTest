@@ -37,8 +37,8 @@ pipeline{
         stage('Build and tests') {
             steps {
                 echo "Building application and Docker image"
-                withCredentials([string(credentialsId: 'DockerHubPwd', Username: 'DOCKER_REGISTRY_USER' , password: 'DOCKER_REGISTRY_PWD')]) {
-                  sh "docker login -u ${DOCKER_REGISTRY_USER} -p ${DOCKER_REGISTRY_PWD}"
+                withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME' , passwordVariable: 'PASSWORD')]) {
+                  sh "docker login -u ${USERNAME} -p ${PASSWORD}"
                   sh "cd ${WORKSPACE}/UI"
                   sh """docker build -t ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG} . || errorExit 'Building ${DOCKER_REPO}:${DOCKER_TAG} failed'""" 
                 }
