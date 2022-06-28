@@ -21,7 +21,7 @@ pipeline{
                         credentialsId: 'gitcred',
                         url: 'https://github.com/RoshmiB/JenkinsTest.git'
                 // Validate kubectl
-                //sh "kubectl cluster-info"
+                sh "kubectl cluster-info"
                 // Init helm client
                 sh "helm version"
                 echo "DOCKER_REG is ${DOCKER_REG}"
@@ -37,7 +37,7 @@ pipeline{
         stage('Build and tests') {
             steps {
                 echo "Building application and Docker image"
-                withCredentials([string(credentialsId: 'DockerHubPwd', passwordVariable: 'DOCKER_REGISTRY_PWD', usernameVariable: 'DOCKER_REGISTRY_USER')]) {
+                withCredentials([string(credentialsId: 'DockerHubPwd', Username: 'DOCKER_REGISTRY_USER' , password: 'DOCKER_REGISTRY_PWD')]) {
                   sh "docker login -u ${DOCKER_REGISTRY_USER} -p ${DOCKER_REGISTRY_PWD}"
                   sh "cd ${WORKSPACE}/UI"
                   sh """docker build -t ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG} . || errorExit 'Building ${DOCKER_REPO}:${DOCKER_TAG} failed'""" 
