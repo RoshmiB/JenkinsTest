@@ -24,7 +24,7 @@ pipeline{
                 sh "kubectl cluster-info"
                 // Init helm client
                 sh "helm version"
-                echo "DOCKER_REG is ${DOCKER_REG}"
+                echo "DOCKER_REPO is ${DOCKER_REPO}"
                 echo "HELM_REPO  is ${HELM_REPO}"
                 // Define a unique name for the tests container and helm release
                 script {
