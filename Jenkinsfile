@@ -17,11 +17,18 @@ pipeline{
                         credentialsId: 'gitcred',
                         url: 'https://github.com/RoshmiB/JenkinsTest.git'
                 // Validate kubectl
-                sh "kubectl cluster-info"
+                //sh "kubectl cluster-info"
                 // Init helm client
                 sh "helm version"
                 echo "DOCKER_REG is ${DOCKER_REG}"
                 echo "HELM_REPO  is ${HELM_REPO}"
+                // Define a unique name for the tests container and helm release
+                script {
+                    branch = GIT_BRANCH.replaceAll('/', '-').replaceAll('\\*', '-')
+                    ID = "${IMAGE_NAME}-${DOCKER_TAG}-${branch}"
+
+                    echo "Global ID set to ${ID}"
+                }
             }
         }
     }
