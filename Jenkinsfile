@@ -19,7 +19,7 @@ pipeline{
                 // Validate kubectl
                 sh "kubectl cluster-info"
                 // Init helm client
-                sh "helm init"
+                sh "helm version"
                 echo "DOCKER_REG is ${DOCKER_REG}"
                 echo "HELM_REPO  is ${HELM_REPO}"
             }
