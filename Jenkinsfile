@@ -71,7 +71,7 @@ pipeline{
                 sh "docker run --detach --name ${ID} --rm --publish ${TEST_LOCAL_PORT}:80 ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG}"
 
                 script {
-                    host_ip = sh(returnStdout: true, script: '/sbin/ifconfig en0 | grep "inet " | cut -d " " -f2 | awk "{ print $1}" | awk \"/default/ { print $3 ":${TEST_LOCAL_PORT}" }\"')
+                    host_ip = sh(returnStdout: true, script: '/sbin/ifconfig en0 | grep 'inet ' | cut -d " " -f2 | awk "{ print $1 ":${TEST_LOCAL_PORT}" }"')
                 }
             }
         } 
