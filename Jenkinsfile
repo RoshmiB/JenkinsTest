@@ -3,6 +3,9 @@ pipeline{
     options{
       timeout(time:60, unit: 'MINUTES')
     }
+    environment {
+        IMAGE_NAME = 'weatherapp-ui'
+    }
     parameters{
       string(name: 'GIT_BRANCH', defaultValue: 'test7' , description: 'Git branch to build')
       string(name: 'DOCKER_REG',       defaultValue: "https://hub.docker.com",                   description: 'Docker registry')
