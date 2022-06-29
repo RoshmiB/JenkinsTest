@@ -117,7 +117,7 @@ pipeline{
                         helm package -d ${WORKSPACE}/helm ${WORKSPACE}/weatherapp-ui || errorExit "Packing helm chart ${WORKSPACE}/weatherapp-ui failed"
                         chart_name="\$( ls -1 "${WORKSPACE}"/helm/*.tgz 2> /dev/null)"
                         echo "\${chart_name}"
-                        helm s3 push "\${chart_name}" my-charts
+                        helm s3 push --force "\${chart_name}" my-charts
                         echo  "Pushing Helm chart"
                         rm -rf ${WORKSPACE}/helm
                     """       
