@@ -14,6 +14,32 @@ def curlRun (url, out) {
     }
 }
 
+def curlTest (namespace, out) {
+    echo "Running tests in ${namespace}"
+
+    script {
+        if (out.equals('')) {
+            out = 'http_code'
+        }
+
+        // Get deployment's service IP
+        def svc_ip = sh (
+                returnStdout: true,
+                script: "kubectl get svc -n ${namespace} | grep ${ID} | awk '{print \$3}'"
+        )
+
+        if (svc_ip.equals('')) {
+            echo "ERROR: Getting service IP failed"
+            sh 'exit 1'
+        }
+
+        echo "svc_ip is ${svc_ip}"
+        url = 'http://' + svc_ip
+
+        curlRun (url, out)
+    }
+}
+
 def createNamespace (namespace) {
     echo "Creating namespace ${namespace} if needed"
 
@@ -34,7 +60,7 @@ def helmInstall (namespace, release) {
 
     script {
         release = "${release}-${namespace}"
-        sh "helm repo add my-charts ${HELM_REPO}; helm repo update"
+        sh "helm repo add ${release} ${HELM_REPO}; helm repo update"
         sh """
             helm upgrade --install --namespace ${namespace} ${release} \
 //                --set imagePullSecrets=${IMG_PULL_SECRET} \
@@ -69,7 +95,7 @@ pipeline{
                         credentialsId: 'gitcred',
                         url: 'https://github.com/RoshmiB/JenkinsTest.git'
                 // Validate kubectl
-                //sh "kubectl cluster-info"
+                sh "kubectl cluster-info"
                 // Init helm client
                 sh "helm version"
                 echo "DOCKER_REPO is ${DOCKER_REPO}"
@@ -115,7 +141,7 @@ pipeline{
                         curlRun ("http://${host_address}", 'http_code')
                     }
                 }
-                stage('Curl total_time') {
+                stage('Curl time_total') {
                     steps {
                         curlRun ("http://${host_address}", 'time_total')
                     }
@@ -181,7 +207,7 @@ pipeline{
                         curlTest (namespace, 'http_code')
                     }
                 }
-                stage('Curl total_time') {
+                stage('Curl time_total') {
                     steps {
                         curlTest (namespace, 'time_total')
                     }
@@ -194,14 +220,14 @@ pipeline{
             }
         }
 
-        stage('Cleanup dev') {
-            steps {
-                script {
-                    // Remove release if exists
-                    helmDelete (namespace, "${ID}")
-                }
-            }
-        }
+        // stage('Cleanup dev') {
+        //     steps {
+        //         script {
+        //             // Remove release if exists
+        //             helmDelete (namespace, "${ID}")
+        //         }
+        //     }
+        // }
 
 
     }
