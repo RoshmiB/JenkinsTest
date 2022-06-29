@@ -23,7 +23,7 @@ pipeline{
     }
     environment {
         IMAGE_NAME = 'weatherapp-ui'
-        TEST_LOCAL_PORT = '3000'
+        TEST_LOCAL_PORT = '80'
     }
     parameters{
       string(name: 'GIT_BRANCH', defaultValue: 'test7' , description: 'Git branch to build')
