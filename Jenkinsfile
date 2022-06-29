@@ -23,7 +23,7 @@ pipeline{
     }
     environment {
         IMAGE_NAME = 'weatherapp-ui'
-        TEST_LOCAL_PORT = '80'
+        TEST_LOCAL_PORT = '3000'
     }
     parameters{
       string(name: 'GIT_BRANCH', defaultValue: 'test7' , description: 'Git branch to build')
@@ -71,7 +71,9 @@ pipeline{
                 sh "docker run --detach --name ${ID} --rm --publish ${TEST_LOCAL_PORT}:80 ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG}"
 
                 script {
-                    host_ip = sh(returnStdout: true, script: "/sbin/ifconfig en0 | grep 'inet ' | cut -d " " -f2 | awk '{ print $1 ':${TEST_LOCAL_PORT}' }'")
+                host_ip = sh(returnStdout: true, script: "/sbin/ifconfig en0 | grep 'inet ' | cut -d ' ' -f2 | awk '{ print \$1 }'")
+                host_address = "${host_ip}".trim()+":${TEST_LOCAL_PORT}"
+                echo "${host_address}"
                 }
             }
         } 
@@ -81,17 +83,17 @@ pipeline{
             parallel {
                 stage('Curl http_code') {
                     steps {
-                        curlRun ("http://${host_ip}", 'http_code')
+                        curlRun ("http://${host_address}", 'http_code')
                     }
                 }
                 stage('Curl total_time') {
                     steps {
-                        curlRun ("http://${host_ip}", 'total_time')
+                        curlRun ("http://${host_address}", 'total_time')
                     }
                 }
                 stage('Curl size_download') {
                     steps {
-                        curlRun ("http://${host_ip}", 'size_download')
+                        curlRun ("http://${host_address}", 'size_download')
                     }
                 }
             }
