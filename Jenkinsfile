@@ -23,7 +23,7 @@ pipeline{
     }
     environment {
         IMAGE_NAME = 'weatherapp-ui'
-        TEST_LOCAL_PORT = '80'
+        TEST_LOCAL_PORT = '3000'
     }
     parameters{
       string(name: 'GIT_BRANCH', defaultValue: 'test7' , description: 'Git branch to build')
@@ -68,7 +68,7 @@ pipeline{
                 sh "[ -z \"\$(docker ps -a | grep ${ID} 2>/dev/null)\" ] || docker rm -f ${ID}"
 
                 echo "Starting ${IMAGE_NAME} container"
-                sh "docker run --detach --name ${ID} --rm --publish 3000:${TEST_LOCAL_PORT} ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG}"
+                sh "docker run --detach --name ${ID} --rm --publish ${TEST_LOCAL_PORT}:3000 ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG}"
 
                 script {
                 host_ip = sh(returnStdout: true, script: "/sbin/ifconfig en0 | grep 'inet ' | cut -d ' ' -f2 | awk '{ print \$1 }'")
