@@ -118,9 +118,9 @@ pipeline{
                 """
                 echo  "Pushing Helm chart"
                 sh """
-                    chart_name="$(ls -1 ${WORKSPACE}/helm/*.tgz 2> /dev/null)"
+                    // chart_name="$(ls -1 ${WORKSPACE}/helm/*.tgz 2> /dev/null)"
                     echo "Helm chart: ${chart_name}"
-                   // helm s3 push  my-charts                    
+                    //helm s3 push  my-charts                    
                     rm -rf ${WORKSPACE}/helm
                 """    
                 
