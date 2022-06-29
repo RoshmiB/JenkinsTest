@@ -115,14 +115,15 @@ pipeline{
                 sh """
                     mkdir -p ${WORKSPACE}/helm
                     helm package -d ${WORKSPACE}/helm ${WORKSPACE}/weatherapp-ui || errorExit "Packing helm chart ${WORKSPACE}/weatherapp-ui failed"
-                """
-                echo  "Pushing Helm chart"
-                sh """
-                    // chart_name="$(ls -1 ${WORKSPACE}/helm/*.tgz 2> /dev/null)"
-                    echo "Helm chart: ${chart_name}"
-                    //helm s3 push  my-charts                    
+                    echo  "Pushing Helm chart"
                     rm -rf ${WORKSPACE}/helm
                 """    
+                                    // chart_name="$(ls -1 ${WORKSPACE}/helm/*.tgz 2> /dev/null)"
+                                    //                    echo "Helm chart: ${chart_name}"
+
+                                                        //helm s3 push  my-charts                    
+
+
                 
             }
         }
