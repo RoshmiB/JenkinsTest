@@ -2,7 +2,7 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  namespace: frontend
+  # namespace: frontend
   name: {{ include "weatherapp-ui.fullname" . }}
   labels:
     {{- include "weatherapp-ui.labels" . | nindent 4 }}

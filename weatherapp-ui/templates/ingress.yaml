@@ -15,7 +15,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  namespace: frontend
+  # namespace: frontend
   name: {{ $fullName }}
   labels:
     {{- include "weatherapp-ui.labels" . | nindent 4 }}

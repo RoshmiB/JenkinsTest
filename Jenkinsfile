@@ -14,6 +14,36 @@ def curlRun (url, out) {
     }
 }
 
+def createNamespace (namespace) {
+    echo "Creating namespace ${namespace} if needed"
+
+    sh "[ ! -z \"\$(kubectl get ns ${namespace} -o name 2>/dev/null)\" ] || kubectl create ns ${namespace}"
+}
+
+def helmDelete (namespace, release) {
+    echo "Deleting ${release} in ${namespace} if deployed"
+
+    script {
+        release = "${release}-${namespace}"
+        sh "[ -z \"\$(helm ls --short ${release} 2>/dev/null)\" ] || helm delete --purge ${release}"
+    }
+}
+
+def helmInstall (namespace, release) {
+    echo "Installing ${release} in ${namespace}"
+
+    script {
+        release = "${release}-${namespace}"
+        sh "helm repo add my-charts ${HELM_REPO}; helm repo update"
+        sh """
+            helm upgrade --install --namespace ${namespace} ${release} \
+//                --set imagePullSecrets=${IMG_PULL_SECRET} \
+                --set image.repository=${DOCKER_REPO}/${IMAGE_NAME},image.tag=${DOCKER_TAG} ${WORKSPACE}/weatherapp-ui
+        """
+        sh "sleep 5"
+    }
+}
+
 
 
 pipeline{
@@ -29,7 +59,7 @@ pipeline{
       string(name: 'GIT_BRANCH', defaultValue: 'test7' , description: 'Git branch to build')
       string(name: 'DOCKER_REPO',       defaultValue: "roshmi",                   description: 'Docker hub repo')
       string(name: 'DOCKER_TAG',       defaultValue: 'dev',                                     description: 'Docker tag')
-      string(name: 'HELM_REPO',        defaultValue: "https://helm-weather.s3.ap-south-1.amazonaws.com/charts/", description: 'Your helm repository')
+      string(name: 'HELM_REPO',        defaultValue: "s3://helm-weather/charts", description: 'Your helm repository')
     }
     stages{
         stage("git clone and setup"){
@@ -121,6 +151,55 @@ pipeline{
                         echo  "Pushing Helm chart"
                         rm -rf ${WORKSPACE}/helm
                     """       
+            }
+        }
+
+        ////////// Step 4 //////////
+        stage('Deploy to dev') {
+            steps {
+                script {
+                    namespace = 'development'
+
+                    echo "Deploying application ${ID} to ${namespace} namespace"
+                    createNamespace (namespace)
+
+                    // Remove release if exists
+                    helmDelete (namespace, "${ID}")
+
+                    // Deploy with helm
+                    echo "Deploying"
+                    helmInstall(namespace, "${ID}")
+                }
+            }
+        }
+
+        // Run the 3 tests on the deployed Kubernetes pod and service
+        stage('Dev tests') {
+            parallel {
+                stage('Curl http_code') {
+                    steps {
+                        curlTest (namespace, 'http_code')
+                    }
+                }
+                stage('Curl total_time') {
+                    steps {
+                        curlTest (namespace, 'time_total')
+                    }
+                }
+                stage('Curl size_download') {
+                    steps {
+                        curlTest (namespace, 'size_download')
+                    }
+                }
+            }
+        }
+
+        stage('Cleanup dev') {
+            steps {
+                script {
+                    // Remove release if exists
+                    helmDelete (namespace, "${ID}")
+                }
             }
         }
 
