@@ -55,13 +55,12 @@ pipeline{
         stage('Build and tests') {
             steps {
                 echo "Building application and Docker image"
-                withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME' , passwordVariable: 'PASSWORD')]) {
-                  sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+                
                   sh """
                       cd ${WORKSPACE}/UI
                       docker build -t ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG} . || errorExit 'Building ${DOCKER_REPO}:${DOCKER_TAG} failed'
                       """ 
-                }
+                
                 echo "Running tests"
 
                 // Kill container in case there is a leftover
@@ -88,7 +87,7 @@ pipeline{
                 }
                 stage('Curl total_time') {
                     steps {
-                        curlRun ("http://${host_address}", 'total_time')
+                        curlRun ("http://${host_address}", 'time_total')
                     }
                 }
                 stage('Curl size_download') {
@@ -97,7 +96,36 @@ pipeline{
                     }
                 }
             }
-        } 
+        }
+
+        ////////// Step 3 //////////
+        stage('Publish Docker and Helm') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME' , passwordVariable: 'PASSWORD')]) {
+                  sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+
+                  echo "Stop and remove container"
+                  sh "docker stop ${ID}"
+
+                  echo "Pushing ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG} image to registry"
+                  sh "docker push ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG}"
+                }
+                
+                echo "Packing helm chart"
+                sh """
+                    mkdir -p ${WORKSPACE}/helm
+                    helm package -d ${WORKSPACE}/helm ${WORKSPACE}/weatherapp-ui || errorExit "Packing helm chart ${WORKSPACE}/weatherapp-ui failed"
+                """
+                echo  "Pushing Helm chart"
+                sh """
+                    chart_name="$(ls -1 ${WORKSPACE}/helm/*.tgz 2> /dev/null)"
+                    echo "Helm chart: ${chart_name}"
+                   // helm s3 push  my-charts                    
+                    rm -rf ${WORKSPACE}/helm
+                """    
+                
+            }
+        }
 
 
     }
