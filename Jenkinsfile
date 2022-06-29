@@ -63,7 +63,6 @@ def helmInstall (namespace, release) {
         sh "helm repo add ${release} ${HELM_REPO}; helm repo update"
         sh """
             helm upgrade --install --namespace ${namespace} ${release} \
-//                --set imagePullSecrets=${IMG_PULL_SECRET} \
                 --set image.repository=${DOCKER_REPO}/${IMAGE_NAME},image.tag=${DOCKER_TAG} ${WORKSPACE}/weatherapp-ui
         """
         sh "sleep 5"
