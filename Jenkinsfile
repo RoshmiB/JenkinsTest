@@ -39,7 +39,7 @@ pipeline{
                         credentialsId: 'gitcred',
                         url: 'https://github.com/RoshmiB/JenkinsTest.git'
                 // Validate kubectl
-                sh "kubectl cluster-info"
+                //sh "kubectl cluster-info"
                 // Init helm client
                 sh "helm version"
                 echo "DOCKER_REPO is ${DOCKER_REPO}"
@@ -68,7 +68,7 @@ pipeline{
                 sh "[ -z \"\$(docker ps -a | grep ${ID} 2>/dev/null)\" ] || docker rm -f ${ID}"
 
                 echo "Starting ${IMAGE_NAME} container"
-                sh "docker run --detach --name ${ID} --rm --publish ${TEST_LOCAL_PORT}:80 ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG}"
+                sh "docker run --detach --name ${ID} --rm --publish 3000:${TEST_LOCAL_PORT} ${DOCKER_REPO}/${IMAGE_NAME}:${DOCKER_TAG}"
 
                 script {
                 host_ip = sh(returnStdout: true, script: "/sbin/ifconfig en0 | grep 'inet ' | cut -d ' ' -f2 | awk '{ print \$1 }'")
